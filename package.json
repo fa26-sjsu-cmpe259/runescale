@@ -8,12 +8,20 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "snapshot:monsters": "node data/fetch-monsters.mts"
+    "snapshot:monsters": "node data/fetch-monsters.mts",
+    "eval": "RUNESCALE_INJECTION_FIXTURE=1 tsx --env-file-if-exists=.env.local eval/run.ts",
+    "eval:grade": "RUNESCALE_INJECTION_FIXTURE=1 tsx --env-file-if-exists=.env.local eval/regrade.ts"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.72",
+    "@ai-sdk/openai-compatible": "^3.0.63",
+    "@ai-sdk/react": "^4.0.131",
+    "ai": "^7.0.128",
+    "fuse.js": "^7.5.0",
     "next": "16.3.8",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -23,6 +31,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^5.0.3"
   }
