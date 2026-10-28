@@ -8,15 +8,6 @@ import { MonsterBoard } from './MonsterBoard';
 import { PartyBuilder } from './PartyBuilder';
 import type { BoardMonster, MonsterOption } from './types';
 
-// Fixed positions and timings so server and client render the same embers.
-const EMBERS = [
-  { left: '8%', delay: '0s', duration: '14s', dx: '20px' },
-  { left: '23%', delay: '5s', duration: '18s', dx: '-30px' },
-  { left: '47%', delay: '9s', duration: '16s', dx: '25px' },
-  { left: '71%', delay: '2s', duration: '20s', dx: '-15px' },
-  { left: '88%', delay: '12s', duration: '15s', dx: '30px' },
-];
-
 export function WarTable({ monsters: options }: { monsters: MonsterOption[] }): ReactElement {
   const [partyLevels, setPartyLevels] = useState<number[]>([5, 5, 5, 5]);
   const [monsters, setMonsters] = useState<BoardMonster[]>([]);
@@ -26,27 +17,28 @@ export function WarTable({ monsters: options }: { monsters: MonsterOption[] }): 
   const board = { partyLevels, monsters: monsters.map(({ name, cr, count }) => ({ name, cr, count })) };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col gap-4 p-4 md:p-6">
-      {EMBERS.map((e) => (
-        <span
-          key={e.left}
-          className="ember"
-          aria-hidden
-          style={{ left: e.left, animationDelay: e.delay, animationDuration: e.duration, ['--ember-dx' as string]: e.dx }}
-        />
-      ))}
-
-      <header className="flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="font-display text-3xl text-rune-soft drop-shadow-[0_0_10px_rgb(157_123_255/0.5)]">Runescale</h1>
-        <p className="text-sm text-ink-muted">Weigh the party against the horde · 2014 DMG rules · SRD monsters</p>
+    <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col gap-[18px] px-4 py-5 md:px-7 lg:h-dvh lg:max-h-dvh lg:overflow-hidden">
+      <header className="flex flex-wrap items-center gap-4">
+        <h1 className="font-display flex items-center gap-2.5 text-[26px] tracking-[0.04em] text-[#e3c58a] [text-shadow:0_0_18px_rgb(227_197_138/0.35)]">
+          <svg viewBox="0 0 32 32" className="size-[26px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden>
+            <path d="M16 3v26M6 9h20M6 9l-4 9h8zM26 9l-4 9h8zM10 29h12" />
+          </svg>
+          Runescale
+        </h1>
+        <p className="ml-auto flex gap-2 text-xs font-semibold tracking-wide text-muted">
+          <span className="rounded-full bg-chip px-2.5 py-1">2014 DMG</span>
+          <span className="rounded-full bg-chip px-2.5 py-1">SRD 5.1 · {options.length} monsters</span>
+        </p>
       </header>
 
-      <div className="grid flex-1 grid-cols-1 gap-4 lg:grid-cols-[minmax(240px,1fr)_minmax(320px,1.4fr)_minmax(340px,1.4fr)]">
-        <div className="flex flex-col gap-4">
+      <PartyBuilder levels={partyLevels} deadlyXp={result.thresholds.deadly} onChange={setPartyLevels} />
+
+      <div className="grid flex-1 grid-cols-1 gap-[18px] lg:min-h-0 lg:grid-cols-[minmax(0,1.5fr)_minmax(380px,1fr)] lg:grid-rows-[minmax(0,1fr)]">
+        <div className="card flex min-w-0 flex-col gap-4 p-5 lg:min-h-0">
+          <h2 className="label-caps">Encounter</h2>
           <DifficultyMeter result={result} />
-          <PartyBuilder levels={partyLevels} onChange={setPartyLevels} />
+          <MonsterBoard options={options} monsters={monsters} onChange={setMonsters} />
         </div>
-        <MonsterBoard options={options} monsters={monsters} onChange={setMonsters} />
         <ChatPanel board={board} options={options} onApply={setMonsters} />
       </div>
     </div>

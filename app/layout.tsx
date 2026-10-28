@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import { Alegreya, Uncial_Antiqua } from "next/font/google";
+import { Cinzel, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
-const uncial = Uncial_Antiqua({
-  variable: "--font-uncial",
-  weight: "400",
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
 });
 
-const alegreya = Alegreya({
-  variable: "--font-alegreya",
+const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
   subsets: ["latin"],
 });
 
@@ -22,7 +21,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${uncial.variable} ${alegreya.variable} h-full antialiased`}
+      className={`${cinzel.variable} ${sourceSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
